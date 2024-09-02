@@ -1,0 +1,23 @@
+
+spring:
+  profiles:
+    active: @profileActive@
+
+#mybatis-plus配置
+mybatis-plus:
+  #XML映射文件位置
+  mapper-locations: classpath:mapper/*.xml
+  #实体类包路径
+  type-aliases-package: com.huiyi.huiyiproject.entity
+  global-config:
+    db-config:
+      #数据库大写下划线转换
+      capital-mode: true
+      #逻辑删除配置
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+  configuration:
+    #数据库字段映射为驼峰命名
+    map-underscore-to-camel-case: true
+    #默认枚举类型处理器
+    default-enum-type-handler: org.apache.ibatis.type.EnumOrdinalTypeHandler
