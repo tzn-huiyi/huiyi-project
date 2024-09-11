@@ -10,11 +10,13 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -56,16 +58,17 @@ public class SecurityConfig {
 	}
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception {
         http
                 //此处配置内置的登录接口，仅自定义接口名、登录成功和失败的处理等
-                //若需完全自定义登录接口，则  http.formLogin().disable() 即可
-                .formLogin(form -> form
-                        .loginProcessingUrl("/myLogin")
-                        .successHandler(new MyAuthenticationSuccessHandler()) //登录成功后处理
-                        .failureHandler(new MyAuthenticationFailureHandler()) //登录失败后处理
-                        .permitAll()
-                )
+                //若需完全自定义登录接口，则去掉.formLogin()方法
+//                .formLogin(form -> form
+//                        .loginProcessingUrl("/myLogin")
+//                        .successHandler(new MyAuthenticationSuccessHandler()) //登录成功后处理
+//                        .failureHandler(new MyAuthenticationFailureHandler()) //登录失败后处理
+//                        .permitAll()
+//                )
+
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // 启用 CORS 配置
                 .csrf(AbstractHttpConfigurer::disable) // 关闭 CSRF 保护
                 .authorizeHttpRequests(auth -> auth
@@ -81,6 +84,14 @@ public class SecurityConfig {
 						.permitAll()
 				)
         ;
+
+        http.sessionManagement(session -> session
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 设置无状态 Session
+        );
+
+        // 在 UsernamePasswordAuthenticationFilter 之前添加 JWT 过滤器
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
 
     }

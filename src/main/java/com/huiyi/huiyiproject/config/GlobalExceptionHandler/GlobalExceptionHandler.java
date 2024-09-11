@@ -25,7 +25,6 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = Exception.class)
     public Result<String> exceptionHandler(Exception e ,HttpServletResponse response){
-        // 其余异常简单返回为服务器异常
         ERRORLOGGER.error("非运行时异常 ",e);
         return Result.failure(CodeEnum.SYSTEM_ERROR.getCode(),CodeEnum.SYSTEM_ERROR.getMsg());
     }

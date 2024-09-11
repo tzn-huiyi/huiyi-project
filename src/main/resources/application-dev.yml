@@ -9,3 +9,17 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/tzn?allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&tinyInt1isBit=false
     username: root
     password: 123456
+  data:
+    #redis配置
+    redis:
+      host: localhost
+      port: 6379
+      password:
+      database: 0
+
+
+jwt:
+  #密钥
+  secret: pWsGQME9RdKMvEO4zZNZMJkBvIiEYFQn7e41PVa+487NUH3DOney4gV3zU5KiEewAoXosiEkV+YlKBAAsMydHA==
+  #过期时间
+  expiration: 7200
