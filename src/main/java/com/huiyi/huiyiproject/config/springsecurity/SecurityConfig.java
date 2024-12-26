@@ -72,7 +72,10 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // 启用 CORS 配置
                 .csrf(AbstractHttpConfigurer::disable) // 关闭 CSRF 保护
                 .authorizeHttpRequests(auth -> auth
-						.requestMatchers("/myLogin", "/logout").permitAll() // 允许未认证的访问
+						.requestMatchers("/myLogin", "/logout"
+                        ,"/menu/**" //菜单允许所有人访问，只保护关键菜单（由权限字符串控制）
+                        ,"/techShare/**" //技术分享允许所有人访问，只保护关键菜单（由权限字符串控制）
+                        ).permitAll() // 允许未认证的访问
                                 .anyRequest().authenticated() // 其他请求需要认证
                 )
                 .exceptionHandling(exception -> exception
@@ -106,6 +109,8 @@ public class SecurityConfig {
         // *表示允许任何来源的请求访问，一般改成项目所属的前端域名或ip端口号
         configuration.setAllowedOrigins(Arrays.asList("*"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+        configuration.setExposedHeaders(Arrays.asList("Authorization"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huiyi.huiyiproject.mapper.MenuMapper">
+
+    <resultMap id="BaseResultMap" type="com.huiyi.huiyiproject.entity.Menu">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="delFlag" column="del_flag" jdbcType="INTEGER"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="menuIndex" column="menu_index" jdbcType="VARCHAR"/>
+            <result property="type" column="type" jdbcType="VARCHAR"/>
+            <result property="parentId" column="parent_id" jdbcType="INTEGER"/>
+            <result property="path" column="path" jdbcType="VARCHAR"/>
+            <result property="orderNum" column="order_num" jdbcType="INTEGER"/>
+            <result property="iconEle" column="icon_ele" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        m.id, m.create_time, m.update_time,
+        m.del_flag, m.name, m.menu_index,
+        m.type, m.parent_id, m.path,
+        m.order_num, m.icon_ele
+    </sql>
+
+    <select id="getAuthorizedMenuTree" resultType="com.huiyi.huiyiproject.entity.Menu">
+        SELECT DISTINCT
+        <include refid="Base_Column_List"/> -- 基础字段
+        FROM
+        menu m
+        LEFT JOIN
+        permission p ON m.id = p.resource_id AND p.resource_type = 'menu'
+        LEFT JOIN
+        role_permission rp ON p.id = rp.permission_id
+        LEFT JOIN
+        user_role ur ON rp.role_id = ur.role_id
+        WHERE
+        p.name IS NULL                     -- 未关联权限表的菜单
+        OR p.name = ''                     -- 权限表中 name 为空字符串的菜单
+        <if test="userId != null">
+            OR ur.user_id = #{userId}      -- 已登录用户的角色权限匹配
+        </if>
+        ORDER BY
+        m.order_num
+    </select>
+
+
+
+    <!--    <select id="getMenuTree" resultType="com.huiyi.huiyiproject.entity.Menu">-->
+<!--        SELECT-->
+<!--            <include refid="Base_Column_List"/>,-->
+<!--            p.name AS permissionString-->
+<!--        FROM-->
+<!--            menu m-->
+<!--        LEFT JOIN-->
+<!--            permission p-->
+<!--        ON-->
+<!--            m.id = p.resource_id AND p.resource_type = 'menu'-->
+<!--        ORDER BY-->
+<!--            m.order_num-->
+<!--    </select>-->
+
+    <update id="deleteMenu" parameterType="java.lang.Long">
+        UPDATE menu
+        SET del_flag = 1
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateOrderNumBatch">
+        <foreach collection="menus" item="menu" separator=";">
+            UPDATE menu
+            SET order_num = #{menu.orderNum}
+            WHERE id = #{menu.id}
+        </foreach>
+    </update>
+
+
+</mapper>

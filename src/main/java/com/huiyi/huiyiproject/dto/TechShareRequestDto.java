@@ -6,10 +6,11 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * 用户请求dto类
+ * 技术分享 请求dto类
  */
 @Data
-public class UserRequestDto {
+public class TechShareRequestDto {
+
 
     /**
      * ID
@@ -33,23 +34,30 @@ public class UserRequestDto {
     private Integer delFlag;
 
     /**
-     * 用户名
+     * 文章标题
      */
-    private String username;
+    private String title;
 
     /**
-     * 用户密码
+     * 文章内容
      */
-    private String password;
+    private String content;
 
     /**
-     * 是否启用
+     * 文章编号
      */
-    private Integer enabled;
+    private String code;
+
+    /**
+     * 文章类型
+     */
+    private String type;
 
     /**
      * 分页查询参数
      */
     private Integer currentPage = 1;
     private Integer pageSize = 10;
+
+
 }

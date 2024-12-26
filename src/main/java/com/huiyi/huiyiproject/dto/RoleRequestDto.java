@@ -6,10 +6,16 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * 用户请求dto类
+ * 角色请求dto类
  */
 @Data
-public class UserRequestDto {
+public class RoleRequestDto {
+
+    /**
+     * 分页查询参数
+     */
+    private Integer currentPage = 1;
+    private Integer pageSize = 10;
 
     /**
      * ID
@@ -33,23 +39,14 @@ public class UserRequestDto {
     private Integer delFlag;
 
     /**
-     * 用户名
+     * 角色名称
      */
-    private String username;
+    private String name;
 
     /**
-     * 用户密码
+     * 角色描述
      */
-    private String password;
+    private String description;
 
-    /**
-     * 是否启用
-     */
-    private Integer enabled;
 
-    /**
-     * 分页查询参数
-     */
-    private Integer currentPage = 1;
-    private Integer pageSize = 10;
 }

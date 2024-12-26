@@ -1,9 +1,11 @@
 package com.huiyi.huiyiproject.utils;
 
+import com.huiyi.huiyiproject.entity.CustomUserDetails;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -33,16 +35,18 @@ public class JwtUtil {
     /**
      * 生成 token，并存入redis
      */
-    public String generateToken(String username) {
+    public String generateToken(CustomUserDetails userDetails) {
+
         String token = Jwts.builder()
-                .setSubject(username)
+                .setSubject(userDetails.getUsername())
+                .claim("nickname",userDetails.getNickname())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration * 1000))
                 .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
 
         // 存储到 Redis 中，设置过期时间
-        redisUtil.set("token:"+ username,token,expiration);
+        redisUtil.set("token:"+ userDetails.getUsername(),token,expiration);
         return token;
     }
 

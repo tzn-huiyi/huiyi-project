@@ -1,6 +1,8 @@
 package com.huiyi.huiyiproject.controller;
 
 
+import com.huiyi.huiyiproject.entity.CustomUserDetails;
+import com.huiyi.huiyiproject.entity.base.Result;
 import com.huiyi.huiyiproject.utils.JwtUtil;
 import com.huiyi.huiyiproject.utils.RedisUtil;
 import jakarta.servlet.http.HttpServletResponse;
@@ -30,22 +32,25 @@ public class LoginController {
     private JwtUtil jwtUtil;
 
     @PostMapping("/myLogin")
-    public String myLogin(@RequestParam String username, @RequestParam String password, HttpServletResponse response) {
+    public Result myLogin(@RequestParam String username, @RequestParam String password, HttpServletResponse response) {
         try {
             // 尝试认证
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(username, password));
 
+            // 从 Authentication 获取 CustomUserDetails
+            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+
             // 登录成功，生成 JWT Token
-            String token = jwtUtil.generateToken(username);
+            String token = jwtUtil.generateToken(userDetails);
 
             // 返回 Token
-            return "登录成功, Token: " + token;
+            return Result.success(token);
 
         } catch (AuthenticationException ex) {
             // 登录失败，返回错误信息
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return "登录失败: " + ex.getMessage();
+            return Result.failure("登录失败");
         }
     }
 }

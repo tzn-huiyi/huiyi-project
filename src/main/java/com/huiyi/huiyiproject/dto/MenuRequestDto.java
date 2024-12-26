@@ -6,10 +6,11 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * 用户请求dto类
+ * 菜单请求dto类
  */
 @Data
-public class UserRequestDto {
+public class MenuRequestDto{
+
 
     /**
      * ID
@@ -33,23 +34,35 @@ public class UserRequestDto {
     private Integer delFlag;
 
     /**
-     * 用户名
+     * 菜单名称
      */
-    private String username;
+    private String name;
 
     /**
-     * 用户密码
+     * 菜单索引
      */
-    private String password;
+    private String index;
 
     /**
-     * 是否启用
+     * 类型（父节点：extend；子节点：content）
      */
-    private Integer enabled;
+    private String type;
 
     /**
-     * 分页查询参数
+     * 父节点的id
      */
-    private Integer currentPage = 1;
-    private Integer pageSize = 10;
+    private Integer parentId;
+
+    /**
+     * 路由路径
+     */
+    private String path;
+
+    /**
+     * 排序编号
+     */
+    private Integer order;
+
+
+
 }

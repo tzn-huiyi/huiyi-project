@@ -12,11 +12,37 @@
             <result property="username" column="username" jdbcType="VARCHAR"/>
             <result property="password" column="password" jdbcType="VARCHAR"/>
             <result property="enabled" column="enabled" jdbcType="TINYINT"/>
+            <result property="code" column="code" jdbcType="VARCHAR"/>
+            <result property="nickname" column="nickname" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,create_time,update_time,
         del_flag,username,password,
-        enabled
+        enabled,code,nickname
     </sql>
+    <select id="selectUserByUsername" resultType="com.huiyi.huiyiproject.entity.User">
+        SELECT
+            u.id,
+            u.username,
+            u.password,
+            u.nickname,
+            u.enabled,
+            r.id AS role_id,
+            r.name AS role_name,
+            p.id AS permission_id,
+            p.name AS permission_name
+        FROM
+            user u
+                LEFT JOIN
+            user_role ur ON u.id = ur.user_id
+                LEFT JOIN
+            role r ON ur.role_id = r.id
+                LEFT JOIN
+            role_permission rp ON r.id = rp.role_id
+                LEFT JOIN
+            permission p ON rp.permission_id = p.id
+        WHERE
+            u.username = #{username};
+    </select>
 </mapper>

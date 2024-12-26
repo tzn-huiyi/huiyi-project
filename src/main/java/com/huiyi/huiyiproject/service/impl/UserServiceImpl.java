@@ -120,7 +120,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
         //分页参数
         Page<User> page = new Page<>(
-                userRequestDto.getPageNum()==null?1:userRequestDto.getPageNum(),
+                userRequestDto.getCurrentPage()==null?1:userRequestDto.getCurrentPage(),
                 userRequestDto.getPageSize()==null?10:userRequestDto.getPageSize()
         );
 

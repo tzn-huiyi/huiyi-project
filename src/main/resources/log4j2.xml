@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <!-- 定义日志存储的位置 -->
+    <Properties>
+        <Property name="LOG_DIR">logs</Property>
+    </Properties>
+
+    <!-- 控制台输出 -->
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %logger{36} - %msg%n" />
+        </Console>
+
+        <!-- 错误日志文件输出 -->
+        <RollingFile name="ErrorFile" fileName="${LOG_DIR}/error.log" filePattern="${LOG_DIR}/error-%d{yyyy-MM-dd}.log.gz">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %logger{36} - %msg%n" />
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+            </Policies>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <!-- 全局日志级别 -->
+        <Root level="info">
+            <AppenderRef ref="Console" />
+        </Root>
+
+        <!-- 自定义 errorLog 的日志级别 -->
+        <Logger name="errorLog" level="error" additivity="false">
+            <AppenderRef ref="ErrorFile" />
+            <AppenderRef ref="Console" />
+        </Logger>
+    </Loggers>
+</Configuration>

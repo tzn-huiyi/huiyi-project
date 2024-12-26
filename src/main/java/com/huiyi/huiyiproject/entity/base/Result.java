@@ -25,6 +25,9 @@ public class Result<T> implements Serializable {
     /**
      * 通用成功返回方法
      */
+    public static <T> Result<T> success() {
+        return new Result<>(CodeEnum.SUCCESS.getCode(), CodeEnum.SUCCESS.getMsg(),null);
+    }
     public static <T> Result<T> success(T data) {
         return new Result<>(CodeEnum.SUCCESS.getCode(), CodeEnum.SUCCESS.getMsg(), data);
     }
@@ -56,6 +59,10 @@ public class Result<T> implements Serializable {
     public static <T> Result<T> failure(int code, String message, T data) {
         return new Result<>(code, message, data);
     }
+    public static <T> Result<T> failure(int code, T data) {
+        return new Result<>(code, "失败",data);
+    }
+
 
     /**
      * 使用错误枚举返回失败（无数据体）

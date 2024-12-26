@@ -1,6 +1,7 @@
 package com.huiyi.huiyiproject.config.springsecurity;
 
 import com.alibaba.fastjson2.JSON;
+import com.huiyi.huiyiproject.config.GlobalExceptionHandler.CodeEnum;
 import com.huiyi.huiyiproject.entity.base.Result;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,9 +25,8 @@ public class MyAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
         HashMap result = new HashMap();
         result.put("data",localizedMessage);
-        result.put("extra","无权限");
         //将异常信息放入自定义result
-        Result<Object> failureResult = Result.failure(result);
+        Result<Object> failureResult = Result.failure(CodeEnum.AUTH_FAIL,result);
         //返回结果转为json字符串
         String jsonResult = JSON.toJSONString(failureResult);
 

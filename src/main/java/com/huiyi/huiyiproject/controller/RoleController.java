@@ -1,43 +1,42 @@
 package com.huiyi.huiyiproject.controller;
 
-import com.huiyi.huiyiproject.dto.UserRequestDto;
-import com.huiyi.huiyiproject.entity.User;
+import com.huiyi.huiyiproject.dto.RoleRequestDto;
+import com.huiyi.huiyiproject.entity.Role;
 import com.huiyi.huiyiproject.entity.base.Result;
-import com.huiyi.huiyiproject.service.UserService;
+import com.huiyi.huiyiproject.service.RoleService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
 
-
 /**
- * user类控制层
+ * role类控制层
  */
 @RestController
-@RequestMapping("/user")
-public class UserController {
+@RequestMapping("/role")
+public class RoleController {
 
     @Resource
-    public UserService userService;
+    public RoleService roleService;
 
     /**
      * 创建一条数据
-     * @param user 用户实体类参数
+     * @param role 用户实体类参数
      * @return 统一接口返回结果类
      */
     @PostMapping("/createOne")
-    public Result<?> createOne(@RequestBody User user){
-        return Result.success(userService.createOne(user));
+    public Result<?> createOne(@RequestBody Role role){
+        return Result.success(roleService.createOne(role));
     }
 
     /**
      * 修改一条数据
-     * @param user 用户实体类参数
+     * @param role 用户实体类参数
      * @return 统一接口返回结果类
      */
     @PostMapping("/updateOne")
-    public Result<?> updateOne(@RequestBody User user){
-        return Result.success(userService.updateOne(user));
+    public Result<?> updateOne(@RequestBody Role role){
+        return Result.success(roleService.updateOne(role));
     }
 
     /**
@@ -47,7 +46,7 @@ public class UserController {
      */
     @PostMapping("/deleteOne/{id}")
     public Result<?> deleteOne(@PathVariable Long id){
-        return Result.success(userService.deleteOne(id));
+        return Result.success(roleService.deleteOne(id));
     }
 
     /**
@@ -57,17 +56,17 @@ public class UserController {
      */
     @PostMapping("/deleteBatch")
     public Result<?> deleteBatch(@RequestBody List<Long> idList){
-        return Result.success(userService.deleteBatch(idList));
+        return Result.success(roleService.deleteBatch(idList));
     }
 
     /**
      * 分页查询多条数据
-     * @param userRequestDto 用户请求实体类参数
+     * @param roleRequestDto 请求实体类参数
      * @return 统一接口返回结果类
      */
     @PostMapping("/findList")
-    public Result<?> findList(@RequestBody UserRequestDto userRequestDto){
-        return Result.success(userService.findList(userRequestDto));
+    public Result<?> findList(@RequestBody RoleRequestDto roleRequestDto){
+        return Result.success(roleService.findList(roleRequestDto));
     }
 
     /**
@@ -77,7 +76,9 @@ public class UserController {
      */
     @GetMapping("/findOne/{id}")
     public Result<?> findOne(@PathVariable Long id){
-        return Result.success(userService.findOne(id));
+        return Result.success(roleService.findOne(id));
     }
+
+
 
 }

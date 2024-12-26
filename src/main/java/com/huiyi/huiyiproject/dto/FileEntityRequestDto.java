@@ -5,11 +5,8 @@ import lombok.Data;
 
 import java.util.Date;
 
-/**
- * 用户请求dto类
- */
 @Data
-public class UserRequestDto {
+public class FileEntityRequestDto {
 
     /**
      * ID
@@ -33,23 +30,39 @@ public class UserRequestDto {
     private Integer delFlag;
 
     /**
-     * 用户名
+     * 原始文件名
      */
-    private String username;
+    private String name;
 
     /**
-     * 用户密码
+     * minio中的唯一文件名
      */
-    private String password;
+    private String uniqueName;
 
     /**
-     * 是否启用
+     * 文件类型
      */
-    private Integer enabled;
+    private String type;
+
+    /**
+     * 文件访问url路径
+     */
+    private String url;
+
+    /**
+     * 关联源数据id
+     */
+    private Long resourceId;
+
+    /**
+     * 关联源数据类型
+     */
+    private String resourceType;
 
     /**
      * 分页查询参数
      */
     private Integer currentPage = 1;
     private Integer pageSize = 10;
+
 }
